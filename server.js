@@ -1,6 +1,13 @@
 import express from "express";
 const app = express();
 
+// bcrypt password hash
+import bcrypt from "bcrypt";
+const saltRounds = 10;
+
+// middleware
+import cors from "cors";
+
 // code needed to make __dirname and __filename work in ES modules
 import * as url from "url";
 const __filename = url.fileURLToPath(import.meta.url);
@@ -28,9 +35,10 @@ const database = {
 	],
 };
 
+// middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(cors());
 app.use(express.static(__dirname + "public"));
 
 // ROUTES
@@ -42,6 +50,13 @@ app.get("/", (req, res) => {
 
 // /signin -- POST res = success/fail
 app.post("/signin", (req, res) => {
+	bcrypt.compare(password, hash, function (err, result) {
+		// result == true
+	});
+	bcrypt.compare(password, hash, function (err, result) {
+		// result == false
+	});
+
 	if (
 		req.body.email === database.users[0].email &&
 		req.body.password === database.users[0].password
@@ -54,6 +69,11 @@ app.post("/signin", (req, res) => {
 // /register -- POST res = user
 app.post("/register", (req, res) => {
 	const { email, name, password } = req.body;
+	bcrypt.hash(password, saltRounds, function (err, hash) {
+		// Store hash in your password DB.
+		console.log(hash);
+	});
+
 	database.users.push({
 		id: "125",
 		name: name,
@@ -81,6 +101,7 @@ app.get("/profile/:id", (req, res) => {
 });
 
 // /image -- PUT res = updated user object or count
+// NOT YET WORKING!!!
 app.post("/image", (req, res) => {
 	const { id } = req.body;
 	let found = false;
