@@ -4,13 +4,14 @@ const app = express();
 // bcrypt password hash
 import bcrypt from "bcrypt";
 const saltRounds = 10;
+const password = "s0//P4$$w0rD";
 
 // middleware
 import cors from "cors";
 
 // code needed to make __dirname and __filename work in ES modules
 import * as url from "url";
-const __filename = url.fileURLToPath(import.meta.url);
+// const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 //
 
@@ -50,11 +51,9 @@ app.get("/", (req, res) => {
 
 // /signin -- POST res = success/fail
 app.post("/signin", (req, res) => {
-	bcrypt.compare(password, hash, function (err, result) {
-		// result == true
-	});
-	bcrypt.compare(password, hash, function (err, result) {
-		// result == false
+	bcrypt.hash(password, saltRounds, function (err, hash) {
+		console.log(hash);
+		// Store hash in your password DB.
 	});
 
 	if (
