@@ -43,7 +43,7 @@ app.use(express.static(__dirname + "public"));
 
 // /  root -- res = 'server is working'
 app.get("/", (req, res) => {
-	res.send(database.users);
+	res.send("success");
 });
 
 // /signin -- POST res = success/fail
